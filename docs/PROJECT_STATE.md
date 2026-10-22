@@ -4,4 +4,4 @@ Plockivo-web 0.2.0 är fristående. Inloggning, sessionsproxy, katalog, kamera d
 
 4 tester, typkontroll och build passerar. Browser verifierar sparad korg efter reload, testorder, ny tom korg, utloggning och mobilvy. Slutlig omkörning av mandat-/logoutjusteringen PASS. Testdata städade. Affärsregler och SQL-tester ägs av separat API-projekt.
 
-API-grunden publicerad i heke99/plockivo efter uttryckligt godkännande. Produktägaren har skapat heke99/plockivo-web. Testad webbversion publiceras där separat från API:t. Ingen Verceldeploy. Nästa steg är GitHub CI för webb, driftprovisionering och API:s inbjudan/MFA och verkliga integrationsprofil. Inte redo för verklig pilot.
+API-grunden publicerad i heke99/plockivo efter uttryckligt godkännande. Produktägaren har skapat heke99/plockivo-web. Webb 0.2.0 är publicerad där separat från API:t. GitHub CI 39857451898 PASS. Ingen Verceldeploy. Nästa steg är driftprovisionering och API:s inbjudan/MFA och verkliga integrationsprofil. Inte redo för verklig pilot.
