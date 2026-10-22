@@ -1,0 +1,2 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+test('client ships a pinned contract artifact',()=>{const lock=JSON.parse(readFileSync('contracts.lock.json'));assert.equal(lock.version,'0.2.0');assert.match(lock.openapi_sha256,/^[a-f0-9]{64}$/);assert.match(readFileSync('src/generated/api.ts','utf8'),/prepare_purchase|purchase_intents/)});
