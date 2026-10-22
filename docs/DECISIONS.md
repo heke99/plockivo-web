@@ -7,3 +7,5 @@
 - D-W05: Ingen frivillig spårning, ingen privat offlinecache och ingen automatisk utcheckning efter nätavbrott.
 
 - D-W06: Ägd varukorg sparas på servern med revision. Kontextbyte väntar på sparande; gammal revision får inte skriva över en annan flik. Nya underlag efter ändring måste granskas igen.
+
+- D-W07: Vercels Trusted Sources/OIDC-konfiguration svarade 404 och kunde inte aktiveras. Testmiljön behåller Deployment Protection. En separat API-automationhemlighet finns endast i webbens servermiljö och skickas till konfigurerat API; klientens skyddsheader vidarebefordras aldrig. Redirects nekas för att inte överföra header till annan server. Supabase-JWT och verksamhetsmandat krävs fortsatt. Ersätt med kortlivad projektidentitet när funktionen kan konfigureras.

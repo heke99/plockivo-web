@@ -14,7 +14,8 @@ async function proxy(req:Request,ctx:{params:Promise<{path:string[]}>}){
  const query=new URL(req.url).searchParams;
  for(const key of ['tenant_id','customer_account_id','store_id','project_id','q'])if(query.has(key))url.searchParams.set(key,query.get(key)!);
  try{
-  const result=await fetch(url,{method:req.method,headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json','Idempotency-Key':req.headers.get('idempotency-key')??''},body,cache:'no-store',signal:AbortSignal.timeout(40000)});
+  const protection=process.env.API_AUTOMATION_BYPASS_SECRET;
+  const result=await fetch(url,{method:req.method,headers:{...(protection?{'x-vercel-protection-bypass':protection}:{}),Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json','Idempotency-Key':req.headers.get('idempotency-key')??''},body,redirect:'error',cache:'no-store',signal:AbortSignal.timeout(40000)});
   return new Response(result.body,{status:result.status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Correlation-ID':result.headers.get('x-correlation-id')??''}});
  }catch{return Response.json({error:{code:'OUTCOME_UNKNOWN',message:'Svaret kunde inte hämtas. Kontrollera samma köp innan du försöker igen.'}},{status:503,headers:{'Cache-Control':'no-store'}})}
 }
