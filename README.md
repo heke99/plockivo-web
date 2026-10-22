@@ -14,4 +14,4 @@ Appen behöver ett körande Plockivo API för verksamhetsflöden, men ingen loka
 
 E2E kräver en isolerad testidentitet med testfixturernas inköpsmandat samt `E2E_WEB_URL`, `E2E_EMAIL`, `E2E_PASSWORD`. Installera Playwright i testmiljön och kör `node tests/e2e/purchase.cjs`. Lägg aldrig riktiga kunduppgifter i testfiler. Screenshots är intern testdata och ska inte publiceras.
 
-Källkoden publiceras i heke99/plockivo-web. Webb och API har separata repon. Ingen Verceldeploy har gjorts.
+Källkoden publiceras i heke99/plockivo-web. Webb och API har separata repon. Skyddad testdrift: https://plockivo-web.vercel.app. Vercel-inloggning och personligt Plockivo-konto är separata kontroller; ingen verklig pilot är aktiverad.

@@ -40,7 +40,7 @@ const {spawn}=require('node:child_process');
  const cookies=await page.context().cookies();
  console.log(JSON.stringify({browser:'PASS',httpOnlyCookies:cookies.every(c=>c.httpOnly),cookieDomains:[...new Set(cookies.map(c=>c.domain))],errors}));
  await page.getByRole('button',{name:'Logga ut'}).click();await page.getByRole('heading',{name:'Logga in i Plockivo'}).waitFor();
- const protectedResponse=await page.request.get(base+'/api/backend/context');if(protectedResponse.status()!==401)throw Error('logout failed');
+ const protectedStatus=await page.evaluate(async()=> (await fetch('/api/backend/context')).status);if(protectedStatus!==401)throw Error('logout failed');
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/mobile.png',fullPage:true});
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);if(overflow)throw Error('mobile overflow');
  console.log('PASS: logout and mobile viewport');await browser.close();
