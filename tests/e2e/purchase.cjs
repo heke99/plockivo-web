@@ -9,7 +9,7 @@ const {spawn}=require('node:child_process');
  fs.mkdirSync('test-results',{recursive:true});
  const page=await browser.newPage({viewport:{width:1440,height:1000}});page.setDefaultTimeout(60000);
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto(base);
+ await page.goto(base+'/app');
  await page.getByRole('heading',{name:'Logga in i Plockivo'}).waitFor();
  await page.screenshot({path:'test-results/desktop.png',fullPage:true});
  await page.getByLabel('E-postadress').fill(creds.email);await page.getByLabel('Lösenord',{exact:true}).fill(creds.password);
@@ -45,3 +45,4 @@ const {spawn}=require('node:child_process');
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);if(overflow)throw Error('mobile overflow');
  console.log('PASS: logout and mobile viewport');await browser.close();
 })().catch(e=>{console.error(e.message);process.exit(1)});
+

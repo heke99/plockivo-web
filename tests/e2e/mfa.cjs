@@ -35,7 +35,7 @@ let browser,activePage;
  const context=await browser.newContext({viewport:{width:1440,height:1000},...(access.bypass?{extraHTTPHeaders:{'x-vercel-protection-bypass':access.bypass}}:{})}),page=await context.newPage();
  activePage=page;page.setDefaultTimeout(60000);page.setDefaultNavigationTimeout(30000);
  page.on('pageerror',e=>errors.push(e.message));
- await page.goto(origin);console.log('Page loaded');
+ await page.goto(origin+'/app');console.log('Page loaded');
  async function api(url,body){return page.evaluate(async({url,body})=>{const r=await fetch(url,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json','X-Plockivo-Request':'1','Idempotency-Key':crypto.randomUUID()}:undefined,body:body?JSON.stringify(body):undefined});const text=await r.text();return {status:r.status,cache:r.headers.get('cache-control'),data:text?JSON.parse(text):null}},{url,body})}
  async function state(){const r=await api('/api/mfa');assert.equal(r.status,200);assert.equal(r.cache,'no-store');return r.data}
  async function login(){await page.getByLabel('E-postadress').fill(access.email);await page.getByLabel('Lösenord',{exact:true}).fill(access.password);const response=page.waitForResponse(r=>r.url().endsWith('/api/session')&&r.request().method()==='POST');await page.getByRole('button',{name:/^Logga in/}).click();const result=await response;if(result.status()!==200)throw Error('Login HTTP '+result.status()+' '+(await result.json()).error)}
@@ -125,3 +125,4 @@ let browser,activePage;
  writeFileSync(process.env.MFA_TEST_ACCESS_FILE??'/tmp/plockivo-mfa-test.json',JSON.stringify({...access,factorSecret:second}),{mode:0o600});
  assert.deepEqual(errors,[]);console.log('PASS: post-MFA saved cart/reload/order, mobile security page, HttpOnly host-only cookies, logout and no pageerrors');
 })().catch(async e=>{console.error(e.stack);if(activePage)console.log('UI failure state',await activePage.evaluate(()=>({headings:[...document.querySelectorAll('h1,h2')].map(x=>x.textContent),buttons:[...document.querySelectorAll('button')].map(x=>({label:x.textContent,disabled:x.disabled,visible:!!x.getClientRects().length}))})));process.exitCode=1}).finally(async()=>{await browser?.close();for(const p of children)p.kill('SIGTERM')});
+
