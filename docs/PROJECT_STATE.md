@@ -7,6 +7,6 @@ Plockivo-web 0.2.0 är fristående. Inloggning, sessionsproxy, katalog, kamera d
 API-grunden publicerad i heke99/plockivo efter uttryckligt godkännande. Produktägaren har skapat heke99/plockivo-web. Webb 0.2.0 är publicerad där separat från API:t. GitHub CI 39857451898 PASS. Skyddad testdrift finns på https://plockivo-web.vercel.app, API på https://plockivo-api.vercel.app. Driftsatt HTTP-/browserresa, mobil, Secure HttpOnly host-only cookies och logout/401 PASS. Syntetiska testdata städade. WORKER-004 är verifierad med aktiv cron. MFA-005 implementerar TOTP-aktivering, challenge vid inloggning och faktorbyte med befintligt bevis; verifierat i lokal browser/HTTP och driftsatt aktivering/login/mobil/logout enligt [MFA-005](work/MFA-005.md). Kod-CI 39955297867 PASS, webb 9e1a63f. Testdata inklusive faktorer/sessioner städade. Nästa steg är personinbjudan/provisionering och verklig integrationsprofil. Inte redo för verklig pilot.
 
 
-## INVITES-006 — aktivt arbete
+## INVITES-006 — publicerad testleverans
 
-Säkra personinbjudningar och UI/framsida implementerade. SQL-rollmatris och lokala kvalitetskontroller PASS. Slutlig browser, publicering och städning följs i [INVITES-006](work/INVITES-006.md). Kontoaktivering och riktiga utskick återstår.
+Säkra personinbjudningar och UI/framsida implementerade. SQL-rollmatris och lokala kvalitetskontroller PASS. Browser, mobil/framsida, säker replay och städning PASS; API och webb publicerade och Vercel READY. Actions står i kö vid slutkontroll. Evidens finns i [INVITES-006](work/INVITES-006.md). Kontoaktivering och riktiga utskick återstår.
