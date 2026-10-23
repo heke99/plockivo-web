@@ -1,0 +1,24 @@
+'use client';
+import {useState} from 'react';
+export type Security={state:{required:boolean;enrolled:boolean;level:string;satisfied:boolean};factors:{id:string;status:string;name:string}[]};
+export function AccountSecurity({security,onComplete,gated=false}:{security:Security;onComplete:()=>Promise<void>;gated?:boolean}){
+ const verified=security.factors.filter(f=>f.status==='verified');
+ const [selected,setSelected]=useState(verified[0]?.id??''),[code,setCode]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const [setup,setSetup]=useState<{id:string;qr:string;secret:string}|null>(null);
+ async function action(body:unknown){
+  const r=await fetch('/api/mfa',{method:'POST',headers:{'X-Plockivo-Request':'1','Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
+  const data=await r.json();if(!r.ok)throw Error(data.error);return data;
+ }
+ async function run(work:()=>Promise<void>){setBusy(true);setError('');try{await work()}catch(e){setError(e instanceof Error?e.message:'Försök igen.')}finally{setCode('');setBusy(false)}}
+ async function verify(){await run(async()=>{await action({action:'verify',factorId:setup?.id??selected,code});setSetup(null);await onComplete()})}
+ return <section className="panel account-security"><span className="step">DITT PERSONLIGA KONTO</span><h2>{gated?'Bekräfta din inloggning':'Säkerhet & autentiseringsappar'}</h2>
+ <p>{security.state.required?'Ditt administrativa mandat kräver tvåstegsverifiering.':'Skydda ditt personliga konto med tvåstegsverifiering.'} Använd en autentiseringsapp som visar sexsiffriga engångskoder.</p>
+ {error&&<div className="alert error" role="alert">{error}</div>}
+ {setup?<><h3>Lägg till Plockivo i din app</h3><p>Skanna QR-koden med autentiseringsappen eller ange nyckeln manuellt. Behandla nyckeln som ett lösenord.</p><img className="mfa-qr" src={setup.qr} width="200" height="200" alt="QR-kod för att lägga till Plockivo i din autentiseringsapp"/><label>Manuell nyckel<input readOnly value={setup.secret} autoComplete="off" aria-label="Manuell nyckel"/></label><p>Aktiveringen är klar först när du har bekräftat en kod nedan.</p></>:verified.length>0?<><p role="status">{security.state.satisfied?'Din inloggning är verifierad.':'Öppna autentiseringsappen och ange den aktuella koden.'}</p><label>Autentiseringsapp<select value={selected} onChange={e=>setSelected(e.target.value)} disabled={busy}>{verified.map(f=><option value={f.id} key={f.id}>{f.name}</option>)}</select></label></>:<p>Ingen app är aktiverad ännu. Lägg till din första autentiseringsapp för att börja.</p>}
+ {(setup||verified.length>0)&&<form onSubmit={e=>{e.preventDefault();void verify()}}><label>Engångskod<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} minLength={6} value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,''))} required disabled={busy}/></label><button className="primary" disabled={busy||code.length!==6}>{busy?'Kontrollerar…':setup?'Aktivera tvåstegsverifiering':gated?'Bekräfta och fortsätt':'Verifiera inloggning'}</button></form>}
+ {!setup&&(!gated||!verified.length)&&<button className="secondary" disabled={busy||(verified.length>0&&code.length!==6)} onClick={()=>void run(async()=>{const data=await action({action:'enroll',...(verified.length?{proofFactorId:selected,code}:{})});setSetup(data)})}>{verified.length?'Lägg till ytterligare en app':'Aktivera tvåstegsverifiering'}</button>}
+ {setup&&<button className="text-button" disabled={busy} onClick={()=>void run(async()=>{await action({action:'cancel',factorId:setup.id});setSetup(null);await onComplete()})}>Avbryt aktiveringen</button>}
+ {!setup&&(!gated||security.factors.some(f=>f.status==='unverified'))&&<><h3>Dina autentiseringsappar</h3>{security.factors.filter(f=>!gated||f.status==='unverified').map(f=><div className="quote-row" key={f.id}><span>{f.name}<small>{f.status==='verified'?'Aktiverad':'Påbörjad aktivering'}</small></span>{f.status==='unverified'?<button disabled={busy} onClick={()=>void run(async()=>{await action({action:'cancel',factorId:f.id});await onComplete()})}>Avbryt</button>:<button disabled={busy||verified.length<2||selected===f.id||code.length!==6} onClick={()=>void run(async()=>{await action({action:'remove',factorId:f.id,proofFactorId:selected,code});await onComplete()})}>Ta bort</button>}</div>)}<p className="muted">För att byta app: ange en aktuell kod från din befintliga app och lägg till den nya. Verifiera sedan den nya appen innan du tar bort den gamla med en kod från appen du behåller.</p></>}
+ <h3>Om du tappar din telefon</h3><p>Behåll gärna en andra verifierad app på en separat enhet. Automatisk återställning av förlorad MFA är ännu inte tillgänglig. Inga företagsmandat ändras när du aktiverar eller byter app.</p>
+ </section>
+}
