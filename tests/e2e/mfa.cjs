@@ -6,6 +6,7 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES+'/playwright');
 const access=JSON.parse(readFileSync(process.env.MFA_TEST_ACCESS_FILE??'/tmp/plockivo-mfa-test.json','utf8'));
+assert.equal(access.email,'e2e-buyer@plockivo.invalid','Only the isolated synthetic fixture may be used');
 const root=path.resolve(__dirname,'../..'),origin=process.env.MFA_TEST_ORIGIN??'http://127.0.0.1:3000';
 const children=[];const errors=[];
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -39,18 +40,33 @@ let browser,activePage;
  async function state(){const r=await api('/api/mfa');assert.equal(r.status,200);assert.equal(r.cache,'no-store');return r.data}
  async function login(){await page.getByLabel('E-postadress').fill(access.email);await page.getByLabel('Lösenord',{exact:true}).fill(access.password);const response=page.waitForResponse(r=>r.url().endsWith('/api/session')&&r.request().method()==='POST');await page.getByRole('button',{name:/^Logga in/}).click();const result=await response;if(result.status()!==200)throw Error('Login HTTP '+result.status()+' '+(await result.json()).error)}
  async function enter(value,button){await page.getByLabel('Engångskod',{exact:true}).fill(value);await page.getByRole('button',{name:button,exact:true}).click()}
- if(process.env.MFA_SMOKE==='1'){
+ if(process.env.MFA_FOCUS==='1'){
+  await login();await page.getByRole('heading',{name:'Plocka. Skanna. Klart.'}).waitFor();
+  await page.getByRole('button',{name:'Kontosäkerhet',exact:true}).click();
+  await page.getByRole('button',{name:'Aktivera tvåstegsverifiering',exact:true}).click();
+  const secret=await page.getByLabel('Manuell nyckel',{exact:true}).inputValue();
+  await enter(await code(secret),'Aktivera tvåstegsverifiering');
+  await page.getByText('Din inloggning är verifierad.',{exact:true}).waitFor();
+  assert.equal((await state()).state.satisfied,true);
+  writeFileSync(process.env.MFA_TEST_ACCESS_FILE??'/tmp/plockivo-mfa-test.json',JSON.stringify({...access,factorSecret:secret}),{mode:0o600});
+  await page.getByRole('button',{name:/Logga ut/}).click();await page.getByRole('button',{name:/^Logga in/}).waitFor();
+  assert.equal((await api('/api/backend/context')).status,401);
+  console.log('PASS: deployed enrollment and awaited logout');
+ }
+ if(process.env.MFA_SMOKE==='1'||process.env.MFA_FOCUS==='1'){
+  const activeAccess=JSON.parse(readFileSync(process.env.MFA_TEST_ACCESS_FILE??'/tmp/plockivo-mfa-test.json','utf8'));
+ 
   await login();await page.getByRole('heading',{name:'Bekräfta din inloggning'}).waitFor();
   assert.equal((await api('/api/backend/context')).status,403);
   await delay(30050-Date.now()%30000);
-  await enter(await code(access.factorSecret),'Bekräfta och fortsätt');
+  await enter(await code(activeAccess.factorSecret),'Bekräfta och fortsätt');
   await page.getByRole('heading',{name:'Plocka. Skanna. Klart.'}).waitFor();
   assert.equal((await api('/api/backend/context')).status,200);
   await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Kontosäkerhet',exact:true}).click();
   await page.getByRole('heading',{name:'Säkerhet & autentiseringsappar'}).waitFor();await page.screenshot({path:'/tmp/plockivo-mfa-mobile.png',fullPage:true});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   const cookies=await context.cookies();const sessionCookies=cookies.filter(c=>c.name.includes('auth-token'));assert(sessionCookies.length>0);assert(sessionCookies.every(c=>c.httpOnly&&c.secure&&!c.domain.startsWith('.')));
-  await page.getByRole('button',{name:/Logga ut/}).click();assert.equal((await api('/api/backend/context')).status,401);
+  await page.getByRole('button',{name:/Logga ut/}).click();await page.getByRole('button',{name:/^Logga in/}).waitFor();assert.equal((await api('/api/backend/context')).status,401);
   assert.deepEqual(errors,[]);console.log('PASS: deployed MFA login challenge, protected API 403→200, mobile labels, Secure HttpOnly host-only session and logout/401');return;
  }
  assert.equal((await api('/api/mfa')).status,401);
@@ -105,7 +121,7 @@ let browser,activePage;
  console.log('PASS: post-MFA saved cart and test order');await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:/Kontosäkerhet/}).click();
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
  const cookies=await context.cookies();assert(cookies.filter(c=>c.name.includes('auth-token')).every(c=>c.httpOnly&&!c.domain.startsWith('.')&&(!origin.startsWith('https:')||c.secure)));
- await page.getByRole('button',{name:/Logga ut/}).click();assert.equal((await api('/api/backend/context')).status,401);
+ await page.getByRole('button',{name:/Logga ut/}).click();await page.getByRole('button',{name:/^Logga in/}).waitFor();assert.equal((await api('/api/backend/context')).status,401);
  writeFileSync(process.env.MFA_TEST_ACCESS_FILE??'/tmp/plockivo-mfa-test.json',JSON.stringify({...access,factorSecret:second}),{mode:0o600});
  assert.deepEqual(errors,[]);console.log('PASS: post-MFA saved cart/reload/order, mobile security page, HttpOnly host-only cookies, logout and no pageerrors');
 })().catch(async e=>{console.error(e.stack);if(activePage)console.log('UI failure state',await activePage.evaluate(()=>({headings:[...document.querySelectorAll('h1,h2')].map(x=>x.textContent),buttons:[...document.querySelectorAll('button')].map(x=>({label:x.textContent,disabled:x.disabled,visible:!!x.getClientRects().length}))})));process.exitCode=1}).finally(async()=>{await browser?.close();for(const p of children)p.kill('SIGTERM')});
