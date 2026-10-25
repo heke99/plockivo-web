@@ -1,0 +1,13 @@
+'use client';
+import {useEffect,useState} from 'react';
+import type {components} from '@/generated/api';
+type Confirmation=components['schemas']['OrderConfirmation'];
+function money(value:string){const n=BigInt(value);return (n/100n).toLocaleString('sv-SE')+','+(n%100n).toString().padStart(2,'0')+' kr'}
+export function OrderConfirmation({intentId}:{intentId:string}){
+ const [confirmation,setConfirmation]=useState<Confirmation|null>(null),[error,setError]=useState(''),[loading,setLoading]=useState(true),[revision,setRevision]=useState(0);
+ useEffect(()=>{let active=true;const controller=new AbortController();setConfirmation(null);setError('');setLoading(true);
+  fetch('/api/backend/purchase-intents/'+encodeURIComponent(intentId)+'/confirmation',{cache:'no-store',signal:controller.signal}).then(async r=>{const body=await r.json();if(!r.ok)throw Error(body.error?.message??'Köpbekräftelsen kunde inte hämtas.');return body.data as Confirmation}).then(data=>{if(active)setConfirmation(data)}).catch(e=>{if(active)setError(e instanceof Error?e.message:'Försök igen.');}).finally(()=>{if(active)setLoading(false)});
+  return()=>{active=false;controller.abort()}
+ },[intentId,revision]);
+ return <section className="order-confirmation" aria-labelledby={'confirmation-'+intentId}><h3 id={'confirmation-'+intentId}>Köpbekräftelse · test</h3><p className="muted">Detta är ett testdokument. Det är ingen faktura, följesedel eller rätt till fysisk utlämning.</p>{loading?<p role="status">Hämtar köpbekräftelsen…</p>:error?<p role="alert" className="alert error">{error}</p>:confirmation?.status==='pending'?<p role="status">Köpbekräftelsen förbereds. Ordern är sparad. Kontrollera igen om en stund.</p>:confirmation?.document?<><dl className="confirmation-details"><dt>Säljare</dt><dd>{confirmation.document.content.seller.name}<small>{confirmation.document.content.seller.organization_number}</small></dd><dt>Köpare</dt><dd>{confirmation.document.content.buyer.name}<small>{confirmation.document.content.buyer.organization_number}</small></dd><dt>Referens</dt><dd>{confirmation.document.content.reference}</dd><dt>Skapad</dt><dd>{new Date(confirmation.document.created_at).toLocaleString('sv-SE')}</dd></dl><ul className="confirmation-lines">{confirmation.document.content.lines.map(line=><li key={line.product_id}><span><strong>{line.name}</strong><small>{line.quantity} {line.unit}</small></span><span>{money((BigInt(line.net_minor)+BigInt(line.vat_minor)).toString())}</span></li>)}</ul><div className="total"><span>Totalt inkl. moms</span><strong>{money(confirmation.document.content.total_minor)}</strong></div></>:null}<button className="text-button" disabled={loading} onClick={()=>setRevision(v=>v+1)}>Hämta aktuell köpbekräftelse</button></section>
+}

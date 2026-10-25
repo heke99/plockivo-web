@@ -1,0 +1,7 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {revokeOwnSessions} from '../src/lib/session-revocation.ts';
+function client({user={},identityError=null,rpcError=null,logoutError=null}={}){const calls=[];return {calls,db:{auth:{getUser:async()=>({data:{user},error:identityError}),signOut:async o=>{calls.push(['logout',o]);return {error:logoutError}}},rpc:async name=>{calls.push(['rpc',name]);return {data:{revoked:2},error:rpcError}}}}}
+test('global logout revokes business sessions before provider logout',async()=>{const {db,calls}=client();const r=await revokeOwnSessions(db);assert.equal(r.status,200);assert.equal(r.body.provider_revoked,true);assert.deepEqual(calls,[['rpc','revoke_my_sessions'],['logout',{scope:'global'}]])});
+test('anonymous and unavailable identities cannot mutate sessions',async()=>{for(const [user,error,status] of [[null,null,401],[null,{status:503},503]]){const {db,calls}=client({user,identityError:error});assert.equal((await revokeOwnSessions(db)).status,status);assert.deepEqual(calls,[])}});
+test('MFA denial never invokes provider global logout',async()=>{const {db,calls}=client({rpcError:{message:'MFA_REQUIRED'}});assert.equal((await revokeOwnSessions(db)).status,403);assert.equal(calls.length,1)});
+test('provider failure preserves authoritative business revocation and is explicit',async()=>{const {db}=client({logoutError:{message:'unavailable'}});const r=await revokeOwnSessions(db);assert.equal(r.status,200);assert.equal(r.body.provider_revoked,false)});
