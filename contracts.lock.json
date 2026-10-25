@@ -1,6 +1,6 @@
 {
   "version": "0.2.0",
   "source_repository": "heke99/plockivo",
-  "openapi_sha256": "ed23213704a435b7f0ad8a943a3392520ac02f55f4f13f531dca684e5f157d56",
+  "openapi_sha256": "9a614ae1b16cf3c5ae561221ef33d470b8d4997dff07afe6cee1c08af9955c50",
   "generator": "openapi-typescript@7.13.0"
 }

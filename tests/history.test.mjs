@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {historyPage} from '../src/lib/history.ts';
+const rows=Array.from({length:25},(_,i)=>({id:'order-'+i,tenant_id:i===24?'other':'a',status:i%2?'completed':'awaiting_approval',created_at:'2026-10-26',total_minor:'100'}));
+test('history is tenant scoped, paginated and safely clamps after filtering',()=>{assert.equal(historyPage(rows,'a','','all',1).items.length,10);assert.equal(historyPage(rows,'a','','all',3).items.length,4);assert.equal(historyPage(rows,'a','','all',999).current,3);assert.equal(historyPage(rows,'a','','all',1).count,24);assert.equal(historyPage(rows,'other','','all',1).count,1)});
+test('history combines exact status and bounded ID search, empty results have valid page',()=>{assert.equal(historyPage(rows,'a','order-1','completed',1).count,6);const r=historyPage(rows,'a','missing','all',20);assert.equal(r.count,0);assert.equal(r.current,1);assert.equal(r.pages,1)});
