@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {displayBranding} from '../src/lib/branding.ts';
+test('branding display rejects remote/script logos and unsafe colors',()=>{for(const logo_data_url of ['https://example.com/a.png','data:image/svg+xml;base64,PHN2Zy8+','javascript:alert(1)'])assert.equal(displayBranding({logo_data_url,primary_color:'url(https://x)'},'Butik').logo_data_url,null);assert.equal(displayBranding({primary_color:'red'},'Butik').primary_color,'#244e3c')});
+test('branding is derived per active member with clean fallback',()=>{assert.deepEqual(displayBranding(undefined,'Andra butiken'),{display_name:'Andra butiken',primary_color:'#244e3c',logo_data_url:null});assert.equal(displayBranding({display_name:'  Butik A  ',primary_color:'#112233',logo_data_url:'data:image/png;base64,YQ=='},'Fallback').display_name,'Butik A')});
