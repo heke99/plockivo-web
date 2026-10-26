@@ -1,6 +1,6 @@
 import {sessionClient,env,sameOrigin} from '@/lib/supabase';
 export const dynamic='force-dynamic';
-const routes=/^(context|catalog|standalone-catalog|merchant-customers|fulfillment\/[a-f0-9-]{36}(?:\/(?:inspect|claim|cancel|returns|billing-underlay|claims\/[a-f0-9-]{36}\/confirm))?|merchant-members(?:\/[a-f0-9-]{36}\/revoke)?|merchant-jobs|merchant-profile|merchant-domains(?:\/[a-f0-9-]{36}\/remove)?|invitations(?:\/(?:options|preview|accept|[a-f0-9-]{36}\/revoke))?|carts\/(?:current|save|[a-f0-9-]{36}\/submit)|purchase-intents(?:\/[a-f0-9-]{36}(?:\/(?:confirm|approval|confirmation))?)?)$/;
+const routes=/^(context|catalog|standalone-catalog(?:\/page)?|merchant-customers|fulfillment\/[a-f0-9-]{36}(?:\/(?:inspect|claim|cancel|returns|billing-underlay|claims\/[a-f0-9-]{36}\/confirm))?|merchant-members(?:\/[a-f0-9-]{36}\/revoke)?|merchant-jobs|merchant-profile|merchant-domains(?:\/[a-f0-9-]{36}\/remove)?|invitations(?:\/(?:options|preview|accept|[a-f0-9-]{36}\/revoke))?|carts\/(?:current|save|[a-f0-9-]{36}\/submit)|purchase-intents(?:\/[a-f0-9-]{36}(?:\/(?:confirm|approval|confirmation))?)?)$/;
 async function proxy(req:Request,ctx:{params:Promise<{path:string[]}>}){
  const path=(await ctx.params).path.join('/');if(!routes.test(path))return new Response(null,{status:404});
  if(req.method==='POST'&&!sameOrigin(req))return new Response(null,{status:403});
@@ -12,7 +12,7 @@ async function proxy(req:Request,ctx:{params:Promise<{path:string[]}>}){
  if(body&&new TextEncoder().encode(body).length>32768)return new Response(null,{status:413});
  const url=new URL('v1/'+path,env().API_URL.replace(/\/?$/,'/'));
  const query=new URL(req.url).searchParams;
- for(const key of ['membership_id','tenant_id','customer_account_id','store_id','project_id','q'])if(query.has(key))url.searchParams.set(key,query.get(key)!);
+ for(const key of ['membership_id','tenant_id','customer_account_id','store_id','project_id','q','after_sku','after_id','limit'])if(query.has(key))url.searchParams.set(key,query.get(key)!);
  try{
   const protection=process.env.API_AUTOMATION_BYPASS_SECRET;
   const result=await fetch(url,{method:req.method,headers:{...(protection?{'x-vercel-protection-bypass':protection}:{}),Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json','Idempotency-Key':req.headers.get('idempotency-key')??''},body,redirect:'error',cache:'no-store',signal:AbortSignal.timeout(40000)});

@@ -52,3 +52,6 @@ CSV-validering/förhandsgranskning och manuell överföring till befintligt arti
 
 ## 2026-10-26 — Batchimport och mallfiler 032–034
 CSV upp till2000 rader/2MiB, nedladdningsbar tom/exempelmall, första100 preview och separat felista. Explicit batchsave en artikel i taget via befintligt API, stabil radnyckel, paus efter pågående svar, stoppa första fel/okänt och säkert återförsök i samma flik. Resultat-JSON, explicit avsluta utan att radera artiklar. UI/formulär/navigering spärras under körning. /import-guide för filer/API. API batchkontrakt synkat; UI använder singeloperationer. Ingen ny användare. Hosted SQL-rollprov PASS/rollback; autentiserad browser-E2E väntar på konto.
+
+## 2026-10-26 — Katalog035–038
+Serverbaserad sökning över hela handlarens katalog och keyset50/sida ersätter lokala första200. Föregående/nästa, total, sena svar skyddade och draft bevarad. Aktuell sida kan exporteras CSV med exakta belopp/formelskydd. Journalv1 kan laddas och återuppta efter reload/devicebyte med originalbody/key; samma personliga konto/handlare krävs. Striktvaliderad, ingen auto-write och lokal confirmedstatus är ej serverbevis. Webb52 tester/build PASS. Inget testkonto eller verklig försäljning skapat.

@@ -1,3 +1,4 @@
+import {catalogJournal} from './catalog-journal.ts';
 import type {ImportItem,ImportRow} from './catalog-import.ts';
 export type BatchBody=ImportItem&{tenant_id:string;id:null;version:0};
 export type BatchEntry={row:number;body:BatchBody;key:string;status:'pending'|'confirmed'|'uncertain';error:string|null};
@@ -14,10 +15,10 @@ export async function runCatalogBatch(batch:CatalogBatch,options:{send:(body:Bat
    if(entry.status==='confirmed')continue;
    if(options.shouldStop())return 'stopped';
    entry.error=null;
-   try{await options.send(entry.body,entry.key)}catch(error){entry.status='uncertain';entry.error=error instanceof Error?error.message:'Svaret kunde inte bekräftas.';options.onProgress();return 'error'}
+   try{await options.send(entry.body,entry.key)}catch(error){entry.status='uncertain';entry.error=error instanceof Error?error.message.slice(0,4000):'Svaret kunde inte bekräftas.';options.onProgress();return 'error'}
    entry.status='confirmed';options.onProgress();
   }
   return 'complete';
  }finally{batch.running=false}
 }
-export function catalogBatchResults(batch:CatalogBatch){return {kind:'plockivo-catalog-import',entries:batch.entries.map(entry=>({row:entry.row,sku:entry.body.sku,tenant_id:entry.body.tenant_id,idempotency_key:entry.key,status:entry.status,error:entry.error}))}}
+export function catalogBatchResults(batch:CatalogBatch){return catalogJournal(batch)}
