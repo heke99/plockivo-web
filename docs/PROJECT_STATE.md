@@ -49,3 +49,6 @@ Egen /forgot-password med e-postvalidering, timeout, generiskt kontoneutralt sva
 
 ## 2026-10-26 — CATALOG-IMPORT-030
 CSV-validering/förhandsgranskning och manuell överföring till befintligt artikelformulär, inga automatiska writes. Exakta belopp, CSV-citat, dubbleringskontroll, positiva mängder, 200 poster/256 kB. Sök/filter i hämtade kund-/artikelregister med synlig 200-postbegränsning. Ingen ny checkout-/kreditauktoritet. Användaren har uppgett att nya Supabase TokenHash-mallar sparats; faktisk leverans/två-enhetsprov fortsatt ej verifierade. Inget testkonto skapat.
+
+## 2026-10-26 — Batchimport och mallfiler 032–034
+CSV upp till2000 rader/2MiB, nedladdningsbar tom/exempelmall, första100 preview och separat felista. Explicit batchsave en artikel i taget via befintligt API, stabil radnyckel, paus efter pågående svar, stoppa första fel/okänt och säkert återförsök i samma flik. Resultat-JSON, explicit avsluta utan att radera artiklar. UI/formulär/navigering spärras under körning. /import-guide för filer/API. API batchkontrakt synkat; UI använder singeloperationer. Ingen ny användare. Hosted SQL-rollprov PASS/rollback; autentiserad browser-E2E väntar på konto.

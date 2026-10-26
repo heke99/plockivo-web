@@ -9,4 +9,6 @@ test('duplicates mark every affected row; invalid money and quantities cannot st
  const r=readCatalogCsv(header+'A;One;st;1;25;123;1;1\nA;Two;st;1;25;123;1;1');assert(r.every(x=>x.item===null&&x.errors.length===2));
  for(const row of ['B;N;st;1e3;25;;1;1','B;N;st;1;13;;1;1','B;N;st;1;25;;0;1','B;N;st;1;25;;1,5;1'])assert.equal(readCatalogCsv(header+row)[0].item,null);
 });
-test('invalid structure and oversized files fail explicitly',()=>{for(const input of ['',header,header+'A;"broken',header+'"A"x;N;st;1;25;;1;1','x'.repeat(262145),header+Array.from({length:201},(_,i)=>`${i};N;st;1;25;;1;1`).join('\n')])assert.throws(()=>readCatalogCsv(input))});
+test('invalid structure and oversized files fail explicitly',()=>{for(const input of ['',header,header+'A;"broken',header+'"A"x;N;st;1;25;;1;1','x'.repeat(2097153),header+Array.from({length:2001},(_,i)=>`${i};N;st;1;25;;1;1`).join('\n')])assert.throws(()=>readCatalogCsv(input))});
+
+test('all 2000 valid rows are retained for sequential import',()=>{const rows=readCatalogCsv(header+Array.from({length:2000},(_,i)=>`${i};N;st;1;25;;1;1`).join('\n'));assert.equal(rows.length,2000);assert(rows.every(row=>row.item))});

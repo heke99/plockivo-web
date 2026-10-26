@@ -19,11 +19,11 @@ function parse(text:string){
 }
 function quantity(s:string){return /^(0|[1-9]\d{0,5})(\.\d{1,6})?$/.test(s)&&/[1-9]/.test(s)}
 export function readCatalogCsv(text:string):ImportRow[]{
- if(new TextEncoder().encode(text).length>262144)throw Error('Filen får vara högst 256 kB.');
+ if(new TextEncoder().encode(text).length>2097152)throw Error('Filen får vara högst 2 MiB.');
  const data=parse(text.replace(/^\uFEFF/,''));const header=data.shift();
  if(!header||header.length!==columns.length||header.some((c,i)=>c.trim()!==columns[i]))throw Error('Kolumnrubrikerna måste följa CSV-exemplet i samma ordning.');
  const rows=data.map((cells,i)=>({cells,row:i+2})).filter(r=>r.cells.some(c=>c.trim()));
- if(!rows.length)throw Error('Filen innehåller inga artiklar.');if(rows.length>200)throw Error('Läs in högst 200 artiklar åt gången.');
+ if(!rows.length)throw Error('Filen innehåller inga artiklar.');if(rows.length>2000)throw Error('Läs in högst 2000 artiklar åt gången.');
  const skuCounts=new Map<string,number>(),barcodeCounts=new Map<string,number>();
  for(const {cells}of rows){const sku=cells[0]?.trim(),barcode=cells[5]?.trim();if(sku)skuCounts.set(sku,(skuCounts.get(sku)??0)+1);if(barcode)barcodeCounts.set(barcode,(barcodeCounts.get(barcode)??0)+1)}
  return rows.map(({cells,row})=>{
