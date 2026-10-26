@@ -55,3 +55,6 @@ CSV upp till2000 rader/2MiB, nedladdningsbar tom/exempelmall, första100 preview
 
 ## 2026-10-26 — Katalog035–038
 Serverbaserad sökning över hela handlarens katalog och keyset50/sida ersätter lokala första200. Föregående/nästa, total, sena svar skyddade och draft bevarad. Aktuell sida kan exporteras CSV med exakta belopp/formelskydd. Journalv1 kan laddas och återuppta efter reload/devicebyte med originalbody/key; samma personliga konto/handlare krävs. Striktvaliderad, ingen auto-write och lokal confirmedstatus är ej serverbevis. Webb52 tester/build PASS. Inget testkonto eller verklig försäljning skapat.
+
+## 2026-10-26 — Testartikel039
+Välj Redigera på sparad katalogartikel för separat create-only testpublicering. Endast sparad snapshot, explicit aktivt kundval och bekräftelse, samma body/key på retry, inget automatiskt source/prissync. UI låser andra katalogåtgärder/navigering under GET/POST. Servermode/test är auktoritativt; verklig kredit/fakturering/lager öppnas inte. Hosted SQL-kedja till bekräftad testorder verifierad, inloggad browserresa väntar på testkonto. API-kontrakt synkat.
