@@ -40,3 +40,9 @@ Startsidan beskriver Plockivo utan under-utveckling/pilotbudskap. CTA, FAQ och h
 
 ## 2026-10-26 — Förbered personligt test utan kontoskapande
 Egen /forgot-password med e-postvalidering, timeout, generiskt kontoneutralt svar och återlänk. Inloggningen länkar dit utan krav på ifylld adress. Tydlig tomvy för inloggat konto utan mandat, med omläsning och kontosäkerhet; ingen automatisk behörighet. AUTH_EMAIL_DELIVERY_ENABLED=true i Vercel web production för utskicksförsök via användarens sparade Strato-SMTP. SMTP-leverans ännu inte bevisad, AUTH_EMAIL_CONFIRMATIONS_VERIFIED ej öppnad. Inga konton eller utskick skapade i detta steg. Tidigare Resend-domängräns är inte ett krav för Strato. Verklig fysisk utlämning/fakturering fortsatt stängd.
+
+## 2026-10-26 — Fyra parallella delar 026–029
+026: explicit TokenHash-bekräftelse på /auth/confirm med fragment och verifiering via POST skapar session på mottagande enhet utan PKCE-verifierare från ursprungsenheten. GET konsumerar inget. Kräver ändrade Supabase-mallänkar enligt EMAIL-LINKS-026; gamla mejl blir inte automatiskt kompatibla. Ingen faktisk SMTP/två-enhetskedja provad ännu.
+027: /app?purchase=UUID bevaras vid login/MFA; explicit öppning kräver befintlig API-åtkomst och valt rätt tenantmandat. Ingen automatisk mutation eller mandatväxling. Länk till ny flik i underlaget.
+028: endast färdig köpbekräftelse kan skrivas ut; isolerad utskriftsvy och testbegränsningar kvar.
+029: /device-check testar API-stöd och uttrycklig kameratillgång utan att behålla videoström. Manuell inmatning kvar när BarcodeDetector saknas. Hjälp länkar dit. Inga testkonton skapade.
