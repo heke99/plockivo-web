@@ -1,6 +1,6 @@
 import {sessionClient,env,sameOrigin} from '@/lib/supabase';
 export const dynamic='force-dynamic';
-const routes=/^(context|catalog|standalone-catalog(?:\/(?:page|[a-f0-9-]{36}\/test-publication))?|merchant-customers|fulfillment\/[a-f0-9-]{36}(?:\/(?:inspect|claim|cancel|returns|billing-underlay|claims\/[a-f0-9-]{36}\/confirm))?|merchant-members(?:\/[a-f0-9-]{36}\/revoke)?|merchant-jobs|merchant-profile|merchant-domains(?:\/[a-f0-9-]{36}\/remove)?|invitations(?:\/(?:options|preview|accept|[a-f0-9-]{36}\/revoke))?|carts\/(?:current|save|[a-f0-9-]{36}\/submit)|purchase-intents(?:\/[a-f0-9-]{36}(?:\/(?:confirm|approval|confirmation))?)?)$/;
+const routes=/^(context|catalog|standalone-catalog(?:\/(?:page|[a-f0-9-]{36}\/test-publication))?|merchant-customers(?:\/[a-f0-9-]{36}\/policy)?|fulfillment\/[a-f0-9-]{36}(?:\/(?:inspect|claim|cancel|returns|billing-underlay|claims\/[a-f0-9-]{36}\/confirm))?|merchant-members(?:\/[a-f0-9-]{36}\/revoke)?|merchant-jobs|merchant-profile|merchant-domains(?:\/[a-f0-9-]{36}\/remove)?|invitations(?:\/(?:options|preview|accept|[a-f0-9-]{36}\/revoke))?|carts\/(?:current|save|[a-f0-9-]{36}\/submit)|purchase-intents(?:\/[a-f0-9-]{36}(?:\/(?:confirm|approval|confirmation))?)?)$/;
 async function proxy(req:Request,ctx:{params:Promise<{path:string[]}>}){
  const path=(await ctx.params).path.join('/');if(!routes.test(path))return new Response(null,{status:404});
  if(req.method==='POST'&&!sameOrigin(req))return new Response(null,{status:403});

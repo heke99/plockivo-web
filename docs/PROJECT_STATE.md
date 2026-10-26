@@ -58,3 +58,6 @@ Serverbaserad sökning över hela handlarens katalog och keyset50/sida ersätter
 
 ## 2026-10-26 — Testartikel039
 Välj Redigera på sparad katalogartikel för separat create-only testpublicering. Endast sparad snapshot, explicit aktivt kundval och bekräftelse, samma body/key på retry, inget automatiskt source/prissync. UI låser andra katalogåtgärder/navigering under GET/POST. Servermode/test är auktoritativt; verklig kredit/fakturering/lager öppnas inte. Hosted SQL-kedja till bekräftad testorder verifierad, inloggad browserresa väntar på testkonto. API-kontrakt synkat.
+
+## 2026-10-26 — Kundpolicy042
+Hantera kund öppnar fyra produktionsanvändbara delar: status/köpstopp, manuell kreditram, villkorsversion+granskat underlag, motivering/referens med versionskontroll/replay/audit. Exponering skrivskyddad. Konflikt bevarardraft och kräver explicit readback; kundbyte varnar om osparat. Aktiv kund kräver reviewed+terms, positivkredit reviewed. Vyn gör inget externt kredit-/företagsuppslag och accepterar inte villkor åt kunden. Hostedprodrollprov PASS, browserAuthkedja återstår. Inget permanentkonto skapat.
