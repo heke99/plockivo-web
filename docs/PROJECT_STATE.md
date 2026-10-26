@@ -34,3 +34,6 @@ Varukontroll och beständigt claim/confirm samt returmottagning implementerade m
 ## Fristående och ansluten drift — 2026-10-26
 
 D012 och masterplanstillägg godkända: inget generellt ERP-krav. Standalone artikel/pris-preparationsregister024 implementerat men hosted migration auto-review avvisad, SQL ej verifierad, gatefalse. Kundadministration025 migration20261026010357 tillämpad och riktig SQL-rollmatris PASS; gate STANDALONE_CUSTOMERS_ENABLED=true konfigurerad nästa deploy. Nya konton suspended/purchaseblocked/zero credit, inga mandat. API verify25 tester/build PASS. Ingen produktionsförsäljning öppnad eller kredit beviljad. Register innebär inte färdig fristående checkout.
+
+## 2026-10-26 — Publik produkttext
+Startsidan beskriver Plockivo utan under-utveckling/pilotbudskap. CTA, FAQ och handlarprofiltext avser befintliga funktioner; ingen automatisk kunddomän utlovas. PWA heter Plockivo och generell topbar visar produktnamnet. Syntetiska order/utlämningsvarningar och funktionsspärrar behålls: textändringen öppnar inte verklig försäljning eller fakturering. Typecheck och produktionsbygge verifieras före publicering.
