@@ -37,3 +37,6 @@ D012 och masterplanstillägg godkända: inget generellt ERP-krav. Standalone art
 
 ## 2026-10-26 — Publik produkttext
 Startsidan beskriver Plockivo utan under-utveckling/pilotbudskap. CTA, FAQ och handlarprofiltext avser befintliga funktioner; ingen automatisk kunddomän utlovas. PWA heter Plockivo och generell topbar visar produktnamnet. Syntetiska order/utlämningsvarningar och funktionsspärrar behålls: textändringen öppnar inte verklig försäljning eller fakturering. Typecheck och produktionsbygge verifieras före publicering.
+
+## 2026-10-26 — Förbered personligt test utan kontoskapande
+Egen /forgot-password med e-postvalidering, timeout, generiskt kontoneutralt svar och återlänk. Inloggningen länkar dit utan krav på ifylld adress. Tydlig tomvy för inloggat konto utan mandat, med omläsning och kontosäkerhet; ingen automatisk behörighet. AUTH_EMAIL_DELIVERY_ENABLED=true i Vercel web production för utskicksförsök via användarens sparade Strato-SMTP. SMTP-leverans ännu inte bevisad, AUTH_EMAIL_CONFIRMATIONS_VERIFIED ej öppnad. Inga konton eller utskick skapade i detta steg. Tidigare Resend-domängräns är inte ett krav för Strato. Verklig fysisk utlämning/fakturering fortsatt stängd.
