@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {validTestQuantity,selectedFulfillmentLines} from '../src/lib/fulfillment.ts';
+test('fulfillment quantities remain exact decimal strings and reject ambiguous values',()=>{for(const v of ['1','0.000001','999999.999999'])assert.equal(validTestQuantity(v),true);for(const v of ['0','-1','1,5','1e3','1.1234567','Infinity',' 1','01'])assert.equal(validTestQuantity(v),false)});
+test('only explicitly selected known order lines are submitted',()=>{assert.deepEqual(selectedFulfillmentLines([{product_id:'a'},{product_id:'b'}],{a:' 0.100000 ',evil:'5'}),[{product_id:'a',quantity:'0.100000'}])});
