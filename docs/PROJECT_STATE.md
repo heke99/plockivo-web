@@ -46,3 +46,6 @@ Egen /forgot-password med e-postvalidering, timeout, generiskt kontoneutralt sva
 027: /app?purchase=UUID bevaras vid login/MFA; explicit öppning kräver befintlig API-åtkomst och valt rätt tenantmandat. Ingen automatisk mutation eller mandatväxling. Länk till ny flik i underlaget.
 028: endast färdig köpbekräftelse kan skrivas ut; isolerad utskriftsvy och testbegränsningar kvar.
 029: /device-check testar API-stöd och uttrycklig kameratillgång utan att behålla videoström. Manuell inmatning kvar när BarcodeDetector saknas. Hjälp länkar dit. Inga testkonton skapade.
+
+## 2026-10-26 — CATALOG-IMPORT-030
+CSV-validering/förhandsgranskning och manuell överföring till befintligt artikelformulär, inga automatiska writes. Exakta belopp, CSV-citat, dubbleringskontroll, positiva mängder, 200 poster/256 kB. Sök/filter i hämtade kund-/artikelregister med synlig 200-postbegränsning. Ingen ny checkout-/kreditauktoritet. Användaren har uppgett att nya Supabase TokenHash-mallar sparats; faktisk leverans/två-enhetsprov fortsatt ej verifierade. Inget testkonto skapat.
