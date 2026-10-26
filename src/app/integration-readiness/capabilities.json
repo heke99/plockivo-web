@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "profile": "standalone_configuration",
   "can_activate_sales": false,
   "scope": "release_capabilities",
@@ -27,6 +27,12 @@
       "label": "Faktureringsunderlag",
       "status": "manual_export",
       "proof": "Manuellt exportunderlag är inte en utfärdad eller bokförd faktura. Fakturanummer, mottagande ekonomisystem och avstämning kräver separat verifiering."
+    },
+    {
+      "id": "manual_receivables",
+      "label": "Manuell betalningsavstämning",
+      "status": "conditional_standalone",
+      "proof": "Behörig handlaradministratör kan registrera avstämda hel-/delbetalningar och spårbara rättelser efter utlämning. Kreditexponeringen justeras exakt; projektförbrukning och lager ändras inte. Ingen banköverföring, bankverifiering eller automatisk ekonomisynk sker."
     },
     {
       "id": "reconciliation",

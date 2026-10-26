@@ -28,3 +28,8 @@
 
 /* Production forms: compact checkboxes and contained mobile layouts. */
 .standalone-admin input[type=checkbox],.production-order input[type=checkbox]{width:20px;min-height:20px;vertical-align:middle;margin:0 10px 0 0;flex-shrink:0}.standalone-admin textarea,.production-order textarea{display:block;width:100%;min-height:100px;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit;margin-top:8px;color:var(--ink)}.production-order fieldset{min-width:0;border:0;padding:0;margin:20px 0}.production-order label{margin:18px 0}.production-order legend{font-size:17px;font-weight:600}.production-order,.production-order-queue{min-width:0;overflow-wrap:anywhere}.production-order-queue>.invitation-list li{flex-wrap:wrap;gap:12px}.production-order-queue>.production-order{margin-top:24px;border:1px solid var(--line);box-shadow:none}.production-order-queue small{display:block;overflow-wrap:anywhere}@media(max-width:680px){.production-order,.production-order-queue{padding:20px}.production-order button,.production-order-queue button{max-width:100%;white-space:normal}.production-order-queue>.production-order{padding:16px}}
+
+/* Payment forms also live inside the narrow order detail column. */
+.production-receivables .standalone-grid{grid-template-columns:minmax(0,1fr)}
+/* Keep the nested order/payment workflow readable on narrow screens. */
+.production-order .production-receivables{padding:22px 0;margin-top:24px;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;background:transparent}.cart-panel>.production-order{padding:22px 0;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}.production-receivables input,.production-receivables textarea,.production-receivables select{max-width:100%}
