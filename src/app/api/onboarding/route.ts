@@ -1,6 +1,7 @@
 import {createClient} from '@supabase/supabase-js';
 import {sessionClient,sameOrigin,env} from '@/lib/supabase';
 import {activateAccount} from '@/lib/onboarding';
+import {verifiedEmailSignupPolicy} from '@/lib/auth-provider-policy';
 export const dynamic='force-dynamic';
 function json(body:unknown,status:number){return Response.json(body,{status,headers:{'Cache-Control':'no-store'}})}
 export async function POST(req:Request){
@@ -13,7 +14,7 @@ export async function POST(req:Request){
   const db=await sessionClient();
   const {data:{session}}=await db.auth.getSession();if(session)return json({error:'Du är redan inloggad. Öppna inbjudningslänken för att fortsätta.'},409);
   const result=await activateAccount(JSON.parse(raw),{
-   enabled:process.env.AUTH_EMAIL_DELIVERY_ENABLED==='true',confirmationsVerified:process.env.AUTH_EMAIL_CONFIRMATIONS_VERIFIED==='true',
+   enabled:process.env.AUTH_EMAIL_DELIVERY_ENABLED==='true',confirmationsVerified:await verifiedEmailSignupPolicy(config.SUPABASE_URL,config.SUPABASE_PUBLISHABLE_KEY),
    allowed:async(token,email)=>{const {data,error}=await anon.rpc('invitation_signup_allowed',{p_token:token,p_email:email});if(error)throw Error('precheck');return data===true},
    signup:async(email,password)=>{const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:new URL('/auth/callback?mode=activation',config.APP_ORIGIN).href}});return {error:!!error,session:!!data.session}},
    clearSession:async()=>{await db.auth.signOut({scope:'local'})}
