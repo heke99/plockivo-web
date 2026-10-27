@@ -25,3 +25,8 @@ Ingen garanti om juridisk fullständighet. Inga nya faktapåståenden om verifie
 standard PASS0fel, typecheck PASS,59befintliga webbtester PASS, slutligt Next16.4.2 webpackproduktionsbygge PASS. Separat HTML-kontroll av7byggda sidor: unika id:n, alla interna sektionsankare når ett id, alla mailtolänkar info@trafexa.com, ingen tidigare personligadress/gatuadress; båda fördjupade sidor har version2026-10-27.2 och innehållsnavigering. Reactgranskning: statiska serverkomponenter, semantisk struktur, inga nya effekter eller klientberoenden, native details/summary med tangentbordsfokus, CSS begränsad till juridiska informationskomponenter. Produktens befintliga59tester verifierar övriga beteenden, inte juridisk riktighet.
 
 Drift- och browserresultat tillkommer efter publicering. Ingen mobil-/fysisktelefon-PASS påstås av CSS-granskningen ensam.
+
+## Publicerat och livekontrollerat
+
+Runtimecommit a0f999b03ba1b2d7ded610331259f23018745022, Vercel dpl_6653xPN1S8gtsbxmMd21Mj6orgdc READY, alias www.plockivo.com/plockivo.com. Faktisk Chrome1363px: båda sidorna visade nya introduktioner, version.2, tre överblickskort, sektionsmeny och korrekt innehåll. Visuell granskning av båda sidor PASS; sidbredd1348<=viewport1363, ingen horisontell sidöverrinning. Policyns länk till begäran scrollade till rätt avsnitt (top23.7px) med korrekt mailtolänk. Cookies visade två inventeringskort och fem FAQ; frågan om400dagar öppnades med korrekt svar. Ingen gatuadress eller tidigare mejladress i renderad sida. Ingen e-post skickades. Fysisktelefon/mobilviewport inte körda i denna ändring.
+GitHub Actions40496500752: completed/success på runtimecommiten ovan.
