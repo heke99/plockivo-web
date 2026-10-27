@@ -78,3 +78,6 @@ Slutcheckpoint060: web7fa226ec, Actions40494695700 success, Vercel dpl_9dTYXT4jT
 
 ## 2026-10-27 — Kontaktuppgifter061
 Användaren har angett info@trafexa.com som gemensam publik kontakt och begärt att gatuadressen tas bort. Central ägaridentitet och gemensam juridisk kontaktkomponent uppdaterade, så ändringen omfattar sidfot och samtliga informationssidor. Ägarens bolagsnamn och organisationsnummer kvarstår.
+
+## 2026-10-27 — LEGAL-062
+Förnyad integritetspolicy/cookiesversion2026-10-27.2 med fördjupat innehåll, överblick, stickysektionsmeny, leverantörskort, läsbara cookiekort, rättighetsprocess och FAQ. Kontakt info@trafexa.com, ingen gatuadress. Inga nya spårnings-/samtyckesfunktioner eller paket. standard/typecheck/59tester/slutligtwebpackbygge PASS;7byggda sidors ankare/id/mailto/versioner PASS. Verksamhetsfrågor om faktiska biträdesavtal/gallring/överföringar kvar enligt LEGAL-060. Se LEGAL-062.
