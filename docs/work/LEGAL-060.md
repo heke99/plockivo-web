@@ -29,3 +29,9 @@ Detta är publicerad produktinformation, inte intyg om full GDPR-efterlevnad ell
 Trafexa Nordic behöver förvalta faktiska biträdesavtal, aktuella underbiträden/regioner/överföringsstöd, logg-/backuplagring och kategorispecifik gallring. Dessa avtal/inställningar har inte verifierats i denna ändring; texten lovar därför varken EU-exklusiv behandling eller en påhittad automatisk raderingsfrist. Kontoavslut/rättighetsärenden sker via publicerad kontakt, ingen självbetjäningsradering utlovas. Ingen generell produktions-GREEN; tidigare faktisk Strato-/fysisktelefonresa återstår.
 
 Publicering och browserkontroll dokumenteras efter att det testade kodläget driftsatts.
+
+## Slutlig publicering och livekontroll
+
+Runtimecommit 7fa226ecca922b5ea40c0fd75503a5ab0c982a2e. GitHub Actions40494695700 completed/success. Vercel dpl_9dTYXT4jT9VDiBr1gfJKhmUERZrp READY, exakt samma commit, alias www.plockivo.com och plockivo.com.
+
+Faktisk Chrome/cloudbrowser: framsidans nya globala footer visad; klick på Integritetspolicy öppnade korrekt titel, datum, innehåll och kontakt. Allmänna villkor, Cookies och Ägare/kontakt öppnades med rätt innehåll. Cookievyn visuellt granskad; två cookierader och tangentbordsåtkomlig scrollregion. /app visar samma ägare och juridiska länkar; /register visar alla tre länkar i formuläret före knappen. Ingen horisontell sidöverrinning vid observerad1363px viewport. Inga konton skapade, ingen inloggning och inga utskick. Fysisktelefon/andra viewportstorlekar inte körda i denna ändring; responsivCSS finns men ingen ny mobilbrowser-PASS påstås.
