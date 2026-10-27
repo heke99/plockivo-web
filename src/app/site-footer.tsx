@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import {legalLinks,platformOwner} from '@/lib/legal';
+export default function SiteFooter(){return <footer className="site-footer"><div className="site-footer-inner"><div><Link className="brand" href="/" aria-label="Plockivo startsida">plockivo<span className="dot">.</span></Link><p>Plockivo ägs och drivs av <strong>{platformOwner.name}</strong>.</p><p>Org.nr {platformOwner.organisationNumber}</p></div><nav aria-label="Juridisk information och kontakt">{legalLinks.map(link=><Link key={link.href} href={link.href}>{link.label}</Link>)}</nav><a className="site-footer-contact" href={`mailto:${platformOwner.email}`}>{platformOwner.email}</a></div></footer>}
