@@ -75,3 +75,6 @@ Slutcheckpoint054–059: API726a9dd3/Vercel dpl_5e3Gr1bfcKjN9t66qkP6eA1DHnAo REA
 ## 2026-10-27 — LEGAL-060
 Fyra offentliga informationssidor: integritetspolicy, allmänna villkor, cookies samt ägare/kontakt. Trafexa Nordic AB/org.nr556855-4884 synlig i global sidfot även i appen; länkar före registrering. Verifierad kodinventering: endast nödvändiga Authcookies, ingen frivillig spårning; ingen banner/accept skapad. standard/typecheck/59tester/webpackbygge PASS. Lokal byggd HTTP-svit7sidor PASS:200, ägare, samtliga länkar, enfooter, ingen anonymSet-Cookie. Kommersiella säljarvillkor ändras inte. Se LEGAL-060 för inventering, källor och kvarvarande verksamhetsansvar.
 Slutcheckpoint060: web7fa226ec, Actions40494695700 success, Vercel dpl_9dTYXT4jT9VDiBr1gfJKhmUERZrp READY på www.plockivo.com. LiveChrome:fyra informationssidor, ägarfooter även /app, länkar före /register-knapp PASS vid1363px utan sidöverrinning. Inget konto/utskick skapat.
+
+## 2026-10-27 — Kontaktuppgifter061
+Användaren har angett info@trafexa.com som gemensam publik kontakt och begärt att gatuadressen tas bort. Central ägaridentitet och gemensam juridisk kontaktkomponent uppdaterade, så ändringen omfattar sidfot och samtliga informationssidor. Ägarens bolagsnamn och organisationsnummer kvarstår.
